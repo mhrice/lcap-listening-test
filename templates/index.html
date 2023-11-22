@@ -10,7 +10,7 @@
 </head>
 <div class="container">
     <h1>LCAP ABX Test</h1>
-    <div>{{file_x}}<br> {{file_a}}<br> {{file_b}}</div>
+    <!-- <div>{{file_x}}<br> {{file_a}}<br> {{file_b}}</div> -->
     <div class="global-buttons-container">
         <button class = "button" id="playButton">Play</button>
         <button class = "button" id="pauseButton">Pause</button>
@@ -26,6 +26,7 @@
                 <div class="hp_range"></div>
             </div>
         </div>
+        <div class="button" id="skip-button">Skip</div>
     </div>
     <div class="submit-buttons">
         <form action="/submit" method="post">
@@ -67,6 +68,7 @@
     const audioAButton = document.getElementById('audioAButton');
     const audioBButton = document.getElementById('audioBButton');
     const audioXButton = document.getElementById('audioXButton');
+    const skipButton = document.getElementById('skip-button');
 
     const selectA = document.getElementById('selectA');
     const selectB = document.getElementById('selectB');
@@ -129,6 +131,9 @@
     selectB.addEventListener('click', function() {
     });
 
+    skipButton.addEventListener('click', function() {
+        location.reload()
+    });
 
 
 
