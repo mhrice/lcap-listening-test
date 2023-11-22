@@ -32,7 +32,7 @@ def submit():
         elif button_text == 'X is B':
             print('B selected')
             answer = file_b
-        output = {"A": file_a, "B": file_b, "X": file_x, "selected": answer}
+        # output = {"A": file_a, "B": file_b, "X": file_x, "selected": answer}
         # Write to csv file
         with open('data.csv', 'a') as f:
             f.write(f"{file_a},{file_b},{file_x},{answer}\n")
