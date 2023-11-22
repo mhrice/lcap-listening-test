@@ -11,15 +11,21 @@
 <div class="container">
     <h1>LCAP ABX Test</h1>
     <div>{{file_x}}<br> {{file_a}}<br> {{file_b}}</div>
-    <div class="buttons-container">
+    <div class="global-buttons-container">
         <button class = "button" id="playButton">Play</button>
         <button class = "button" id="pauseButton">Pause</button>
-        <button class = "button" id="audioXButton">Audio X</button>
-        <button class = "button" id="audioAButton">Audio A</button>
-        <button class = "button" id="audioBButton">Audio B</button>
     </div>
-    <div class="hp_slide">
-        <div class="hp_range"></div>
+    <div class="audio-files-container">
+        <div class="audio-buttons-container">
+            <button class = "button" id="audioXButton">X</button>
+            <button class = "button" id="audioAButton">A</button>
+            <button class = "button" id="audioBButton">B</button>
+        </div>
+        <div class="slider-container">
+            <div class="hp_slide">
+                <div class="hp_range"></div>
+            </div>
+        </div>
     </div>
     <div class="submit-buttons">
         <form action="/submit" method="post">
@@ -65,6 +71,8 @@
     const selectA = document.getElementById('selectA');
     const selectB = document.getElementById('selectB');
 
+    audioXButton.classList.add('selected');
+
     playButton.addEventListener('click', function() {
         context.resume()
         audioA.play();
@@ -83,19 +91,31 @@
         audioA.muted = false;
         audioB.muted = true;
         audioX.muted = true;
+        audioAButton.classList.add('selected');
+        audioBButton.classList.remove('selected');
+        audioXButton.classList.remove('selected');
+
     });
 
     audioBButton.addEventListener('click', function() {
         audioA.muted = true;
         audioB.muted = false;
         audioX.muted = true;
+        audioAButton.classList.remove('selected');
+        audioBButton.classList.add('selected');
+        audioXButton.classList.remove('selected');
     });
 
     audioXButton.addEventListener('click', function() {
         audioA.muted = true;
         audioB.muted = true;
         audioX.muted = false;
+        audioAButton.classList.remove('selected');
+        audioBButton.classList.remove('selected');
+        audioXButton.classList.add('selected');
     });
+
+
     audioA.addEventListener('timeupdate', function() {
         var duration = audioA.duration;
         var currentTime = audioA.currentTime;

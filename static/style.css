@@ -5,11 +5,22 @@
     margin-top: 50px;
     height: 85vh;
 }
-.buttons-container {
+.global-buttons-container {
     display: flex;
     justify-content: space-between;
     margin-top: 20px;
-    width: 100%;
+}
+
+.audio-files-container {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.audio-buttons-container {
+    display: flex;
+    justify-content: space-between;
+
 }
 
 .button {
@@ -25,6 +36,7 @@
     background-color: #008CBA;
     flex: 1;
     margin: 4px;
+    width: 200px;
 }
 .button:hover {
     background-color: #555555;
@@ -52,16 +64,23 @@
     background-color: #555555;
 }
 
+.selected {
+    border: 4px solid silver;
+}
 
-.hp_slide {
+.slider-container {
+    margin-top: 12px;
+    border: 2px solid #008CBA;
     width: 100%;
+}
+.hp_slide {
     background: white;
     height: 25px;
 }
 
 .hp_range {
     width: 0;
-    background: black;
+    background: #008CBA;
     height: 25px;
 }
 
