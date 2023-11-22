@@ -1,0 +1,77 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 50px;
+    height: 85vh;
+}
+.buttons-container {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+    width: 100%;
+}
+
+.button {
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 8px;
+    background-color: #008CBA;
+    flex: 1;
+    margin: 4px;
+}
+.button:hover {
+    background-color: #555555;
+}
+
+
+#playButton {
+    background-color: #4CAF50; /* Green */
+}
+#playButton:hover {
+    background-color: #555555;
+}
+
+#pauseButton {
+    background-color: #FF0000; /* Red */
+}
+#pauseButton:hover {
+    background-color: #555555;
+}
+
+#audioXButton {
+    background-color:blueviolet;
+}
+#audioXButton:hover {
+    background-color: #555555;
+}
+
+
+.hp_slide {
+    width: 100%;
+    background: white;
+    height: 25px;
+}
+
+.hp_range {
+    width: 0;
+    background: black;
+    height: 25px;
+}
+
+.submit-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: auto;
+    width: 80%;
+}
+.submit-buttons button {
+    min-width: 200px;
+    margin: 4px;
+}

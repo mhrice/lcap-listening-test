@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LCAP ABX Test</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<div class="container">
+    <h1>LCAP ABX Test</h1>
+    <div>{{file_x}}<br> {{file_a}}<br> {{file_b}}</div>
+    <div class="buttons-container">
+        <button class = "button" id="playButton">Play</button>
+        <button class = "button" id="pauseButton">Pause</button>
+        <button class = "button" id="audioXButton">Audio X</button>
+        <button class = "button" id="audioAButton">Audio A</button>
+        <button class = "button" id="audioBButton">Audio B</button>
+    </div>
+    <div class="hp_slide">
+        <div class="hp_range"></div>
+    </div>
+    <div class="submit-buttons">
+        <form action="/submit" method="post">
+            <input type="submit" name="data" value="X is A" class = "button" id="selectA"></input>
+        </form>
+        <form action="/submit" method="post">
+            <input type="submit" name="data" value="X is B" class = "button" id="selectB"></input>
+        </form>
+    </div>
+</div>
+<script>
+    // for legacy browsers
+    const AudioContext = window.AudioContext || window.webkitAudioContext;
+    const context = new AudioContext();
+    urlA = "{{file_a}}"
+    urlB = "{{file_b}}"
+    urlX = "{{file_x}}"
+
+    const audioA = new Audio(urlA)
+    const source1 = context.createMediaElementSource(audioA);
+    source1.connect(context.destination);
+    audioA.loop = true;
+
+    const audioB = new Audio(urlB)
+    const source2 = context.createMediaElementSource(audioB);
+    source2.connect(context.destination);
+    audioB.loop = true;
+
+    const audioX = new Audio(urlX)
+    const source3 = context.createMediaElementSource(audioX);
+    source3.connect(context.destination);
+    audioX.loop = true;
+
+    audioA.muted = true;
+    audioB.muted = true;
+
+    const playButton = document.getElementById('playButton');
+    const pauseButton = document.getElementById('pauseButton');
+    const audioAButton = document.getElementById('audioAButton');
+    const audioBButton = document.getElementById('audioBButton');
+    const audioXButton = document.getElementById('audioXButton');
+
+    const selectA = document.getElementById('selectA');
+    const selectB = document.getElementById('selectB');
+
+    playButton.addEventListener('click', function() {
+        context.resume()
+        audioA.play();
+        audioB.play();
+        audioX.play();
+    });
+
+    pauseButton.addEventListener('click', function() {
+        audioA.pause();
+        audioB.pause();
+        audioX.pause();
+
+    });
+
+    audioAButton.addEventListener('click', function() {
+        audioA.muted = false;
+        audioB.muted = true;
+        audioX.muted = true;
+    });
+
+    audioBButton.addEventListener('click', function() {
+        audioA.muted = true;
+        audioB.muted = false;
+        audioX.muted = true;
+    });
+
+    audioXButton.addEventListener('click', function() {
+        audioA.muted = true;
+        audioB.muted = true;
+        audioX.muted = false;
+    });
+    audioA.addEventListener('timeupdate', function() {
+        var duration = audioA.duration;
+        var currentTime = audioA.currentTime;
+        var percentage = (currentTime / duration) * 100;
+        document.querySelector('.hp_range').style.width = percentage + "%";
+    });
+
+    selectA.addEventListener('click', function() {
+    });
+
+    selectB.addEventListener('click', function() {
+    });
+
+
+
+
+</script>
+</html>
