@@ -1,1 +1,4 @@
 flask
+soundfile
+pyloudnorm
+tqdm
