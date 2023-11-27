@@ -2,6 +2,7 @@ import os
 import glob
 import argparse
 import soundfile
+import numpy as np
 import pyloudnorm as pyln
 
 from tqdm import tqdm
@@ -29,16 +30,28 @@ if __name__ == "__main__":
     )
     args = parser.parse_args()
 
-    audio_files = glob.glob(os.path.join(args.root_dir, "**/*.flac"), recursive=True)
-    print(f"Founds {len(audio_files)} audio files")
+    audio_files = []
+    for ext in ["**/*.flac", "**/*.mp3", "**/*.wav", "**/*.ogg", "**/*.aiff"]:
+        audio_files.extend(glob.glob(os.path.join(args.root_dir, ext), recursive=True))
+
+    print(f"Found {len(audio_files)} audio files")
 
     for audio_file in tqdm(audio_files):
-        data, rate = soundfile.read(audio_file)
-        meter = pyln.Meter(rate)
-        loudness_db = meter.integrated_loudness(data)
-        loudness_delta = args.target_loudness - loudness_db
-        loudness_delta_linear = 10 ** (loudness_delta / 20)
-        data_normalized = data * loudness_delta_linear
+        try:
+            data, rate = soundfile.read(audio_file)
+            meter = pyln.Meter(rate)
+            loudness_db = meter.integrated_loudness(data)
 
-        if not args.dry_run:
-            soundfile.write(audio_file, data_normalized, rate)
+            # if the audio is already at the target loudness, skip it
+            if np.isclose(args.target_loudness, loudness_db, rtol=0.1):
+                continue
+
+            loudness_delta = args.target_loudness - loudness_db
+            loudness_delta_linear = 10 ** (loudness_delta / 20)
+            data_normalized = data * loudness_delta_linear
+
+            if not args.dry_run:
+                soundfile.write(audio_file, data_normalized, rate)
+        except Exception as e:
+            print(f"Error processing {audio_file}: {e}")
+            continue
