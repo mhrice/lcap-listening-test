@@ -9,7 +9,7 @@
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <div class="container">
-    <h1>LCAP ABX Test</h1>
+    <h1 class="lead">LCAP ABX Test</h1>
     <!-- <div>{{file_x}}<br> {{file_a}}<br> {{file_b}}</div> -->
     <div class="global-buttons-container">
         <button class = "button" id="playButton">Play</button>
@@ -26,15 +26,18 @@
                 <div class="hp_range"></div>
             </div>
         </div>
-        <div class="button" id="skip-button">Skip</div>
     </div>
     <div class="submit-buttons">
-        <form action="/submit" method="post">
-            <input type="submit" name="data" value="X is A" class = "button" id="selectA"></input>
+        <form>
+            <input type="submit" class="button" id="skip-button" value="Skip"></input>
         </form>
         <form action="/submit" method="post">
-            <input type="submit" name="data" value="X is B" class = "button" id="selectB"></input>
+            <input type="submit" name="data" value="A is closer" class = "button" id="selectA"></input>
         </form>
+        <form action="/submit" method="post">
+            <input type="submit" name="data" value="B is closer" class = "button" id="selectB"></input>
+        </form>
+
     </div>
 </div>
 <script>

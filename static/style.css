@@ -12,7 +12,7 @@
 }
 
 .audio-files-container {
-    margin-top: 20px;
+    margin-top: 40px;
     display: flex;
     flex-direction: column;
     position: relative;
@@ -45,7 +45,7 @@
 
 
 #playButton {
-    background-color: #4CAF50; /* Green */
+    background-color: #008CBA; /* Green */
 }
 #playButton:hover {
     background-color: rgba(120, 115, 115, 0.79);
@@ -62,18 +62,32 @@
 #audioXButton {
     background-color:blueviolet;
 }
-#audioXButton:hover {
-    background-color: rgba(120, 115, 115, 0.79);
 
+
+#audioAButton {
+    background-color:orange;
 }
 
+#selectA {
+    background-color:orange;
+}
+
+#audioBButton {
+    background-color:olivedrab;
+}
+
+#selectB {
+    background-color:olivedrab;
+}
+
+
 .selected {
-    border: 6px solid rgb(229, 151, 63);
+    border: 3px solid black;
 }
 
 .slider-container {
     margin-top: 12px;
-    border: 2px solid #008CBA;
+    border: 2px solid grey;
     width: 100%;
 }
 .hp_slide {
@@ -83,27 +97,28 @@
 
 .hp_range {
     width: 0;
-    background: #008CBA;
+    background: grey;
     height: 25px;
 }
 
 #skip-button {
-    position: absolute;
-    right: -30%;
-    bottom: 0%;
-    /* transform: translateY(-50%); */
-    width: 30px;
-    border-radius: 16px;
-    padding: 12px;
+    background-color: grey;
 }
 
 .submit-buttons {
     display: flex;
     justify-content: space-between;
-    margin-top: 20px;
+    margin-top: 40px;
     /* width: 80%; */
 }
 .submit-buttons button {
     min-width: 200px;
     margin: 4px;
+}
+
+.lead {
+    margin-top: 20px;
+    font-size: 48px;
+    font-weight: bold;
+    font-family: sans-serif;
 }
