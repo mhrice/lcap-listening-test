@@ -10,7 +10,6 @@
 </head>
 <div class="container">
     <h1 class="lead">LCAP ABX Test</h1>
-    <!-- <div>{{file_x}}<br> {{file_a}}<br> {{file_b}}</div> -->
     <div class="global-buttons-container">
         <button class = "button" id="playButton">Play</button>
         <button class = "button" id="pauseButton">Pause</button>
@@ -44,9 +43,10 @@
     // for legacy browsers
     const AudioContext = window.AudioContext || window.webkitAudioContext;
     const context = new AudioContext();
-    urlA = "{{file_a}}"
-    urlB = "{{file_b}}"
-    urlX = "{{file_x}}"
+    const urlA = "{{file_a}}"
+    const urlB = "{{file_b}}"
+    const urlX = "{{file_x}}"
+    const shouldAutoplay = "{{should_autoplay}}"
 
     const audioA = new Audio(urlA)
     const source1 = context.createMediaElementSource(audioA);
@@ -78,17 +78,39 @@
 
     audioXButton.classList.add('selected');
 
+    if (shouldAutoplay === "True") {
+        audioA.play();
+        audioB.play();
+        audioX.play();
+    }
+
     playButton.addEventListener('click', function() {
         context.resume()
         audioA.play();
         audioB.play();
         audioX.play();
+        fetch("/play", {
+            method: "POST",
+            body: JSON.stringify({
+            }),
+            headers: {
+                "Content-type": "application/json; charset=UTF-8"
+            }
+        });
     });
 
     pauseButton.addEventListener('click', function() {
         audioA.pause();
         audioB.pause();
         audioX.pause();
+        fetch("/pause", {
+            method: "POST",
+            body: JSON.stringify({
+            }),
+            headers: {
+                "Content-type": "application/json; charset=UTF-8"
+            }
+        });
 
     });
 
