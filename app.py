@@ -5,6 +5,7 @@ import glob
 import datetime
 import json
 import getpass
+from flask import Response
 
 app = Flask(__name__)
 # Define the upload folder
@@ -14,6 +15,7 @@ app.config["Audio_DIR"] = AUDIO_DIR
 file_a = ""
 file_b = ""
 file_x = ""
+should_autoplay = False
 
 
 @app.route("/")
@@ -29,7 +31,13 @@ def index():
 
     file_a, file_b, file_x = random.sample(audio_files, 3)
     print(file_a, file_b, file_x)
-    return render_template("index.html", file_a=file_a, file_b=file_b, file_x=file_x)
+    return render_template(
+        "index.html",
+        file_a=file_a,
+        file_b=file_b,
+        file_x=file_x,
+        should_autoplay=should_autoplay,
+    )
 
 
 @app.route("/submit", methods=["POST"])
@@ -60,3 +68,17 @@ def submit():
             json.dump(output, f, indent=4)
 
     return redirect(url_for("index"))
+
+
+@app.route("/play", methods=["POST"])
+def play():
+    global should_autoplay
+    should_autoplay = True
+    return Response(status=204)
+
+
+@app.route("/pause", methods=["POST"])
+def pause():
+    global should_autoplay
+    should_autoplay = False
+    return Response(status=204)
