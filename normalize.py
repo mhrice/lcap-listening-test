@@ -47,6 +47,7 @@ if __name__ == "__main__":
                 continue
 
             loudness_delta = args.target_loudness - loudness_db
+            loudness_delta = np.clip(loudness_delta, -32.0, 32.0)
             loudness_delta_linear = 10 ** (loudness_delta / 20)
             data_normalized = data * loudness_delta_linear
 
