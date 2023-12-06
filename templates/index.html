@@ -11,14 +11,16 @@
 <div class="container">
     <h1 class="lead">LCAP ABX Test</h1>
     <div class="global-buttons-container">
-        <button class = "button" id="playButton">Play</button>
-        <button class = "button" id="pauseButton">Pause</button>
+        <button class="button" id="playButton">Play</button>
+        <button class="button" id="pauseButton">Pause</button>
     </div>
     <div class="audio-files-container">
         <div class="audio-buttons-container">
-            <button class = "button" id="audioXButton">X</button>
-            <button class = "button" id="audioAButton">A</button>
-            <button class = "button" id="audioBButton">B</button>
+            <button class="button" id="audioXButton">X</button>
+            <button class="button" id="audioAButton">A</button>
+            <button class="button" id="audioBButton">B</button>
+            <button class="button" id="audioCButton">C</button>
+
         </div>
         <div class="slider-container">
             <div class="hp_slide">
@@ -27,14 +29,17 @@
         </div>
     </div>
     <div class="submit-buttons">
-        <form>
-            <input type="submit" class="button" id="skip-button" value="Skip"></input>
+        <form action="/skip" method="post">
+            <input type="submit" class="button" id="skip-button" value="Don't Know"></input>
         </form>
         <form action="/submit" method="post">
-            <input type="submit" name="data" value="A is closer" class = "button" id="selectA"></input>
+            <input type="submit" name="data" value="A is closer" class="button" id="selectA"></input>
         </form>
         <form action="/submit" method="post">
-            <input type="submit" name="data" value="B is closer" class = "button" id="selectB"></input>
+            <input type="submit" name="data" value="B is closer" class="button" id="selectB"></input>
+        </form>
+        <form action="/submit" method="post">
+            <input type="submit" name="data" value="C is closer" class="button" id="selectC"></input>
         </form>
 
     </div>
@@ -45,6 +50,7 @@
     const context = new AudioContext();
     const urlA = "{{file_a}}"
     const urlB = "{{file_b}}"
+    const urlC = "{{file_c}}"
     const urlX = "{{file_x}}"
     const shouldAutoplay = "{{should_autoplay}}"
 
@@ -58,36 +64,48 @@
     source2.connect(context.destination);
     audioB.loop = true;
 
-    const audioX = new Audio(urlX)
-    const source3 = context.createMediaElementSource(audioX);
+    const audioC = new Audio(urlC)
+    const source3 = context.createMediaElementSource(audioC);
     source3.connect(context.destination);
+    audioC.loop = true;
+
+    const audioX = new Audio(urlX)
+    const source4 = context.createMediaElementSource(audioX);
+    source4.connect(context.destination);
     audioX.loop = true;
 
     audioA.muted = true;
     audioB.muted = true;
+    audioC.muted = true;
+
 
     const playButton = document.getElementById('playButton');
     const pauseButton = document.getElementById('pauseButton');
     const audioAButton = document.getElementById('audioAButton');
     const audioBButton = document.getElementById('audioBButton');
+    const audioCButton = document.getElementById('audioCButton');
     const audioXButton = document.getElementById('audioXButton');
     const skipButton = document.getElementById('skip-button');
 
     const selectA = document.getElementById('selectA');
     const selectB = document.getElementById('selectB');
+    const selectC = document.getElementById('selectC');
+
 
     audioXButton.classList.add('selected');
 
     if (shouldAutoplay === "True") {
         audioA.play();
         audioB.play();
+        audioC.play();
         audioX.play();
     }
 
-    playButton.addEventListener('click', function() {
+    playButton.addEventListener('click', function () {
         context.resume()
         audioA.play();
         audioB.play();
+        audioC.play();
         audioX.play();
         fetch("/play", {
             method: "POST",
@@ -99,9 +117,10 @@
         });
     });
 
-    pauseButton.addEventListener('click', function() {
+    pauseButton.addEventListener('click', function () {
         audioA.pause();
         audioB.pause();
+        audioC.pause();
         audioX.pause();
         fetch("/pause", {
             method: "POST",
@@ -114,53 +133,67 @@
 
     });
 
-    audioAButton.addEventListener('click', function() {
+    audioAButton.addEventListener('click', function () {
         audioA.muted = false;
         audioB.muted = true;
+        audioC.muted = true;
         audioX.muted = true;
         audioAButton.classList.add('selected');
         audioBButton.classList.remove('selected');
+        audioCButton.classList.remove('selected');
         audioXButton.classList.remove('selected');
 
     });
 
-    audioBButton.addEventListener('click', function() {
+    audioBButton.addEventListener('click', function () {
         audioA.muted = true;
         audioB.muted = false;
+        audioC.muted = true;
         audioX.muted = true;
         audioAButton.classList.remove('selected');
         audioBButton.classList.add('selected');
+        audioCButton.classList.remove('selected');
         audioXButton.classList.remove('selected');
     });
 
-    audioXButton.addEventListener('click', function() {
+    audioCButton.addEventListener('click', function () {
+        audioA.muted = true;
+        audioB.muted = true;
+        audioC.muted = false;
+        audioX.muted = true;
+        audioAButton.classList.remove('selected');
+        audioBButton.classList.remove('selected');
+        audioCButton.classList.add('selected');
+        audioXButton.classList.remove('selected');
+    });
+
+    audioXButton.addEventListener('click', function () {
         audioA.muted = true;
         audioB.muted = true;
         audioX.muted = false;
         audioAButton.classList.remove('selected');
         audioBButton.classList.remove('selected');
+        audioCButton.classList.remove('selected');
         audioXButton.classList.add('selected');
     });
 
 
-    audioA.addEventListener('timeupdate', function() {
+    audioA.addEventListener('timeupdate', function () {
         var duration = audioA.duration;
         var currentTime = audioA.currentTime;
         var percentage = (currentTime / duration) * 100;
         document.querySelector('.hp_range').style.width = percentage + "%";
     });
 
-    selectA.addEventListener('click', function() {
+    selectA.addEventListener('click', function () {
     });
 
-    selectB.addEventListener('click', function() {
+    selectB.addEventListener('click', function () {
     });
 
-    skipButton.addEventListener('click', function() {
-        location.reload()
-    });
 
 
 
 </script>
+
 </html>
