@@ -5,6 +5,7 @@
     margin-top: 50px;
     height: 85vh;
 }
+
 .global-buttons-container {
     display: flex;
     justify-content: space-between;
@@ -39,45 +40,58 @@
     margin: 4px;
     width: 200px;
 }
+
 .button:hover {
     background-color: rgba(120, 115, 115, 0.79);
 }
 
 
 #playButton {
-    background-color: #008CBA; /* Green */
+    background-color: #008CBA;
+    /* Green */
 }
+
 #playButton:hover {
     background-color: rgba(120, 115, 115, 0.79);
 }
 
 #pauseButton {
-    background-color: #FF0000; /* Red */
+    background-color: #FF0000;
+    /* Red */
 }
+
 #pauseButton:hover {
     background-color: rgba(120, 115, 115, 0.79);
 
 }
 
 #audioXButton {
-    background-color:blueviolet;
+    background-color: blueviolet;
 }
 
 
 #audioAButton {
-    background-color:orange;
+    background-color: orange;
 }
 
 #selectA {
-    background-color:orange;
+    background-color: orange;
 }
 
 #audioBButton {
-    background-color:olivedrab;
+    background-color: olivedrab;
 }
 
 #selectB {
-    background-color:olivedrab;
+    background-color: olivedrab;
+}
+
+#audioCButton {
+    background-color: rgb(131, 35, 142);
+}
+
+#selectC {
+    background-color: rgb(131, 35, 142);
 }
 
 
@@ -90,6 +104,7 @@
     border: 2px solid grey;
     width: 100%;
 }
+
 .hp_slide {
     background: white;
     height: 25px;
@@ -111,6 +126,7 @@
     margin-top: 40px;
     /* width: 80%; */
 }
+
 .submit-buttons button {
     min-width: 200px;
     margin: 4px;
