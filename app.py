@@ -9,7 +9,7 @@ from flask import Response
 
 app = Flask(__name__)
 # Define the upload folder
-AUDIO_DIR = "static/audio"
+AUDIO_DIR = "static/audio/guitarset-pedalboard/inter-effect"
 app.config["Audio_DIR"] = AUDIO_DIR
 
 file_a = ""
@@ -19,23 +19,57 @@ file_x = ""
 should_autoplay = False
 random.seed(123)
 
+# assume directory structure is:
+# root_dir
+#   inter-effect
+#     effect1
+#       file_a
+#       file_b
+#       file_c
+#       file_x
+
+#     effect2
+#     ...
+#   intra-effect
+#     effect1
+#     effect2
+#     ...
+
+
+# test case directories
+test_dirs = glob.glob(os.path.join(AUDIO_DIR, "*"))
+test_dirs = [d for d in test_dirs if os.path.isdir(d)]
+
+# find example directories in each test_dir
+dirs = []
+for d in test_dirs:
+    example_dirs = glob.glob(os.path.join(d, "*"))
+    example_dirs = [d for d in example_dirs if os.path.isdir(d)]
+    dirs.extend(example_dirs)
+
+random.shuffle(dirs)  # shuffle the directory order
+dir_index = 0  # keep track of which directory we're on
+
 
 @app.route("/")
 def index():
-    global file_a, file_b, file_c, file_x
-    # Assume the audio files are in subdirectories in the audio directory
-    dirs = [
-        os.path.join(app.config["Audio_DIR"], x)
-        for x in os.listdir(app.config["Audio_DIR"])
-        if os.path.isdir(os.path.join(app.config["Audio_DIR"], x))
-    ]
-    d = random.choice(dirs)
+    global file_a, file_b, file_c, file_x, dirs, dir_index
+
+    d = dirs[dir_index]
+    dir_index += 1
+
     audio_files = []
-    print(d)
     for ext in ["**/*.flac", "**/*.mp3", "**/*.wav", "**/*.ogg", "**/*.aiff"]:
         audio_files.extend(glob.glob(os.path.join(d, ext), recursive=True))
+
     file_a, file_b, file_c, file_x = sorted(audio_files[:4])
     print(file_a, file_b, file_c, file_x)
+
+    # swap around the a, b, c files randomly
+    files = [file_a, file_b, file_c]
+    random.shuffle(files)
+    file_a, file_b, file_c = files
+
     return render_template(
         "index.html",
         file_a=file_a,
@@ -43,6 +77,8 @@ def index():
         file_c=file_c,
         file_x=file_x,
         should_autoplay=should_autoplay,
+        dir_index=dir_index,
+        total_dirs=len(dirs),
     )
 
 
