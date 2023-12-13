@@ -52,11 +52,18 @@ dir_index = 0  # keep track of which directory we're on
 
 
 @app.route("/")
-def index():
-    global file_a, file_b, file_c, file_x, dirs, dir_index
+def root():
+    return redirect(url_for("index", idx=dir_index))
 
+
+@app.route("/<int:idx>")
+def index(idx):
+    global file_a, file_b, file_c, file_x, dirs, dir_index
+    if idx >= len(dirs):
+        return "Done!"
+    dir_index = idx
+    print(dir_index)
     d = dirs[dir_index]
-    dir_index += 1
 
     audio_files = []
     for ext in ["**/*.flac", "**/*.mp3", "**/*.wav", "**/*.ogg", "**/*.aiff"]:
@@ -84,7 +91,7 @@ def index():
 
 @app.route("/submit", methods=["POST"])
 def submit():
-    global file_a, file_b, file_c, file_x
+    global file_a, file_b, file_c, file_x, dir_index
     if request.method == "POST":
         print(request.form)
         # Get button name
@@ -108,17 +115,18 @@ def submit():
         }
         fname = os.path.join(
             "submissions",
-            datetime.datetime.now().strftime("%y-%m-%d-%H-%M-%S-%f") + ".json",
+            f"{dir_index}_{getpass.getuser()}.json",
         )
         with open(fname, "w") as f:
             json.dump(output, f, indent=4)
-
-    return redirect(url_for("index"))
+    if dir_index < len(dirs):
+        dir_index += 1
+    return redirect(url_for("index", idx=dir_index))
 
 
 @app.route("/skip", methods=["POST"])
 def skip():
-    global file_a, file_b, file_c, file_x
+    global file_a, file_b, file_c, file_x, dir_index
     output = {
         "A": file_a,
         "B": file_b,
@@ -129,12 +137,13 @@ def skip():
     }
     fname = os.path.join(
         "submissions",
-        datetime.datetime.now().strftime("%y-%m-%d-%H-%M-%S-%f") + ".json",
+        f"{dir_index}_{getpass.getuser()}.json",
     )
     with open(fname, "w") as f:
         json.dump(output, f, indent=4)
-
-    return redirect(url_for("index"))
+    if dir_index < len(dirs):
+        dir_index += 1
+    return redirect(url_for("index", idx=dir_index))
 
 
 @app.route("/play", methods=["POST"])
